@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:NetflixApp.Converteurs"
+             xmlns:Icon="clr-namespace:NetflixApp.Ressources"
+             x:Class="NetflixApp.Pages.OnboardingPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="black">
+    <ContentPage.Resources>
+
+        <converters:BoolToAspectConverter x:Key="boolToAspect"/>
+
+        <Style x:Key="LabelStyle" TargetType="Label">
+            <Setter Property="TextColor" Value="#fff"/>
+            <Setter Property="TextTransform" Value="None"/>
+            <Setter Property="HorizontalTextAlignment" Value="center"/>
+        </Style>
+        <Style x:Key="TitleLabelStyle"
+               BasedOn="{x:StaticResource LabelStyle}"
+               TargetType="Label">
+            <Setter Property="FontSize" Value="38"/>
+            <Setter Property="FontAttributes" Value="None"/>
+            <Setter Property="TextColor" Value="WhiteSmoke"/>
+            <Setter Property="WidthRequest" Value="350"/>
+            <Setter Property="Margin" Value="30,0"/>
+        </Style>
+        <Style x:Key="BodyLabelStyle"
+        BasedOn="{x:StaticResource LabelStyle}"
+        TargetType="Label">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontAttributes" Value="None"/>
+            <Setter Property="TextColor" Value="White"/>
+        </Style>
+        <Style x:Key="HeaderLabelStyle" TargetType="Label">
+            <Setter Property="TextColor" Value="#fff"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="FontSize" Value="Small"/>
+            <Setter Property="TextTransform" Value="Uppercase"/>
+        </Style>
+        <Style x:Key="MaterialDesignIcon" TargetType="Label">
+            <Setter Property="FontFamily" Value="mdi" />
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="VerticalTextAlignment" Value="Center"/>
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="TextColor" Value="Gray" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="TextColor" Value="Red" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <!--ici chaque valeur constitue la hauteur des lignes de la grid et pour les colonnes c'est la largeur 
+        * = prend tout l'espace disponible
+        auto = prend la taille du contenue-->
+        <Grid RowDefinitions="0, auto, 20,*,20, auto, 10" 
+              ColumnDefinitions="8,*,8">
+
+            <CarouselView 
+                Grid.Row="0"
+                Grid.RowSpan="4"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                HorizontalOptions="FillAndExpand"
+                ItemsSource="{Binding OnboardingModels}"
+                Loop="False"
+                VerticalOptions="FillAndExpand">
+                 <CarouselView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="12,*,auto"
+                              RowDefinitions="*"
+                              HorizontalOptions="FillAndExpand"
+                              VerticalOptions="FillAndExpand">
+
+                            <Image Grid.Row="0"
+                                   Grid.Column="0"
+                                   Grid.ColumnSpan="3"
+                                   VerticalOptions="Center"
+                                   Margin="0,0,0,30"
+                                   Source="{Binding ImageSource}" 
+                                   Aspect="{Binding Path=IsFill, Converter={StaticResource boolToAspect}}">
+                            </Image>
+                            <BoxView 
+                                     Grid.Row="0"
+                                     Grid.Column="0"
+                                     Grid.ColumnSpan="3"
+                                     Opacity="2"
+                                     IsVisible="{Binding IsFill}">
+                                    <BoxView.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <GradientStop Color="black" Offset="0.01" />
+                                            <GradientStop Color="Transparent" Offset="0.2"/>
+                                            <GradientStop Color="#000000" Offset="1.0" />
+                                        </LinearGradientBrush>
+                                    </BoxView.Background>
+                            </BoxView>
+                                <StackLayout VerticalOptions="End"
+                                             Grid.Row="0"
+                                             Grid.Column="0"
+                                             Grid.ColumnSpan="2">
+                                <Label Text="{Binding Titre}" Style="{StaticResource TitleLabelStyle}">
+                                </Label>
+                                <Label Text="{Binding SousTitre}" Style="{StaticResource BodyLabelStyle}"></Label>
+                            </StackLayout>
+                        </Grid>
+                    </DataTemplate>
+                 </CarouselView.ItemTemplate>
+            </CarouselView>
+
+
+            <Image Grid.Row="1"
+                   Grid.Column="1"
+                   Margin="0,3"
+                   BackgroundColor="Transparent"
+                   HorizontalOptions="Start"
+                   Source="icon"
+                   WidthRequest="45"/>
+
+            <StackLayout Grid.Row="1"
+                         Grid.Column="1"
+                         HorizontalOptions="EndAndExpand"
+                         Orientation="Horizontal"
+                         VerticalOptions="Center">
+                
+                <Label Text="Privacy" Style="{StaticResource HeaderLabelStyle}"/>
+
+                <Label Text="Sign In" Style="{StaticResource HeaderLabelStyle}"/>
+
+                <Label Text="{x:Static Icon:IconFonts.DotsVertical}" Style="{StaticResource MaterialDesignIcon}"/>
+            </StackLayout>
+
+            <Button 
+                Grid.Row="5"
+                Grid.Column="1"
+                Margin="11,0"
+                Padding="10"
+                BackgroundColor="#ff0000"
+                Text="Get Started"
+                TextColor="Black"
+                
+            />
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
